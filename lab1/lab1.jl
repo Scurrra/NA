@@ -13,7 +13,7 @@ begin
 	using DataFrames, PrettyTables
 
 	using PlutoUI
-	TableOfContents()
+	#TableOfContents()
 end
 
 # ╔═╡ 32f02311-d88b-47ef-a399-59752ce037a5
@@ -36,15 +36,13 @@ end
 
 # ╔═╡ 8d82ca3e-b058-49b7-8398-064de7da35d3
 begin
-	|₂(A::Matrix{<:Number}) = maximum( eigen(A' * A).values )
+	|₂(A::Matrix{<:Number}) = maximum( eigen(A' * A).values ) |> sqrt
 	|₂(v::Vector{<:Number}) = sum( abs2, v ) |> sqrt
 end
 
 # ╔═╡ f3572ec8-4ec9-4b87-b39b-34f3f652c8a0
 md"""
 ## Задание 1. Метод Гаусса
-
-[PrettyTables.jl](https://ronisbr.github.io/PrettyTables.jl/stable/man/text_backend/)
 """
 
 # ╔═╡ f1857dc6-6a51-4bed-b2a0-749c325b7794
