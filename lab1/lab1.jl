@@ -13,7 +13,7 @@ begin
 	using DataFrames, PrettyTables
 
 	using PlutoUI
-	#TableOfContents()
+	TableOfContents()
 end
 
 # ╔═╡ 32f02311-d88b-47ef-a399-59752ce037a5
