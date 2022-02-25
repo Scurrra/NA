@@ -104,8 +104,7 @@ begin
 
 			# det
 			eq.det *= eq.solution[start+1, (2+step)]
-			@show step, eq.solution[start+1, (2+step)], [start+1, (2+step)]
-
+			
 			# Σ
 			eq.solution[(start+1):(start+n+1-step), "Σ"] = sum( eq.solution[(start+1):(start+n+1-step), (2+step):(n+1+2)] |> Matrix, dims=2 )[:, 1]
 			# b
@@ -146,11 +145,11 @@ sle = SLE(A, f̄)
 # ╔═╡ cd9d8f24-8bf7-49ee-a506-4a98c4c0a5d8
 sle |> solve
 
-# ╔═╡ 7a4ea9df-c08b-4ef1-8f1e-df476d8698a3
-A \ f̄
-
 # ╔═╡ ba30acac-a40f-4034-b16d-8d4292477d1e
 sle.x
+
+# ╔═╡ 7a4ea9df-c08b-4ef1-8f1e-df476d8698a3
+A \ f̄
 
 # ╔═╡ 98618ada-6cc9-4436-802b-b66acda14603
 md"""
@@ -161,9 +160,12 @@ md"""
 # ╔═╡ e207693c-1d52-4ee4-92b2-8799a26decc2
 ∞(sle.A * sle.x - sle.f̄)
 
+# ╔═╡ 3c693e33-245e-4eb5-a349-6eaa77dc5974
+sle.A * sle.x - sle.f̄
+
 # ╔═╡ d1712dc8-eeaa-4b55-b03b-de381f111ad6
 md"""
-### Октоэдрическая норма
+### Октаэдрическая норма
 """
 
 # ╔═╡ 0cc9be03-889f-411f-8a97-12f9ed0363f1
@@ -220,7 +222,7 @@ md"""
 # ╠═90464d1e-75aa-423c-9f29-dce94cf84003
 # ╠═8d82ca3e-b058-49b7-8398-064de7da35d3
 # ╟─f3572ec8-4ec9-4b87-b39b-34f3f652c8a0
-# ╟─f2797a5d-8f42-4c03-ac10-4331c1075ff1
+# ╠═f2797a5d-8f42-4c03-ac10-4331c1075ff1
 # ╠═f1857dc6-6a51-4bed-b2a0-749c325b7794
 # ╠═6bbb66c7-5458-4482-93e3-06293bf7dbb7
 # ╠═53a63945-6809-4fc4-8987-21bd7b7c5e90
@@ -230,6 +232,7 @@ md"""
 # ╠═7a4ea9df-c08b-4ef1-8f1e-df476d8698a3
 # ╟─98618ada-6cc9-4436-802b-b66acda14603
 # ╠═e207693c-1d52-4ee4-92b2-8799a26decc2
+# ╠═3c693e33-245e-4eb5-a349-6eaa77dc5974
 # ╟─d1712dc8-eeaa-4b55-b03b-de381f111ad6
 # ╠═0cc9be03-889f-411f-8a97-12f9ed0363f1
 # ╟─3055ffbe-5012-4b65-8c6d-7fd33dd55661
