@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.18.0
+# v0.18.2
 
 using Markdown
 using InteractiveUtils
@@ -68,7 +68,7 @@ begin
 		solution::DataFrame
 
 		x
-		r̄::Number
+		r̄
 
 		det
 
@@ -131,6 +131,8 @@ begin
 
 		eq.x = eq.solution[(start+1):(start+n), "aᵢ$(n+1)"] |> Vector |> reverse .|> Float64
 
+		eq.r̄ = (eq.A * eq.x - eq.f̄)
+
 		with_terminal() do
 			pretty_table(eq.solution, formatters=ft_nomissing)
 		end
@@ -142,6 +144,9 @@ sle = SLE(A, f̄)
 
 # ╔═╡ cd9d8f24-8bf7-49ee-a506-4a98c4c0a5d8
 sle |> solve
+
+# ╔═╡ cdab7141-216c-4f72-8c29-f2f5cd013670
+pretty_table(sle.solution, formatters=ft_nomissing)
 
 # ╔═╡ ba30acac-a40f-4034-b16d-8d4292477d1e
 sle.x
@@ -156,10 +161,10 @@ md"""
 """
 
 # ╔═╡ e207693c-1d52-4ee4-92b2-8799a26decc2
-∞(sle.A * sle.x - sle.f̄)
+∞(sle.r̄)
 
 # ╔═╡ 3c693e33-245e-4eb5-a349-6eaa77dc5974
-sle.A * sle.x - sle.f̄
+sle.r̄
 
 # ╔═╡ d1712dc8-eeaa-4b55-b03b-de381f111ad6
 md"""
@@ -167,7 +172,7 @@ md"""
 """
 
 # ╔═╡ 0cc9be03-889f-411f-8a97-12f9ed0363f1
-|₁(sle.A * sle.x - sle.f̄)
+|₁(sle.r̄)
 
 # ╔═╡ 3055ffbe-5012-4b65-8c6d-7fd33dd55661
 md"""
@@ -175,7 +180,7 @@ md"""
 """
 
 # ╔═╡ 2159d142-9448-4ec9-ae27-abf34c797bbb
-|₂(sle.A * sle.x - sle.f̄)
+|₂(sle.r̄)
 
 # ╔═╡ 330340cb-fc9a-456c-b292-5058ecdd968a
 md"""
@@ -213,6 +218,61 @@ md"""
 # ╔═╡ df3c1167-ed28-4b77-8ac7-0f8ebddee9ae
 |₂(A)
 
+# ╔═╡ 84472daa-bd6b-4f58-a2d1-dbbfb6a222bb
+md"""
+# Лабораторная работа #2
+# Нахождение обратной матрицы
+"""
+
+# ╔═╡ 436cf432-e6a5-4029-abf1-15e73833f689
+md"""
+## Задание 1. Нахождение обратной матрицы
+"""
+
+# ╔═╡ 073884d6-4126-4001-bb23-cc84b678cf7d
+map(
+	f -> begin
+		sle = SLE(A, f |> Vector)
+		solve(sle)
+		sle
+	end,
+	eachcol(diagm(ones(size(A, 1))))
+)
+
+# ╔═╡ 8c0747d9-84b0-44a1-834e-ad5e02cd5a36
+inv_sle(A::Matrix) = hcat(map(
+	f -> begin
+		sle = SLE(A, f |> Vector)
+		solve(sle)
+		sle.x
+	end,
+	eachcol(diagm(ones(size(A, 1))))
+)...)
+
+# ╔═╡ 5eea2411-64cc-40b9-a36b-3106f7ff26d0
+A * inv_sle(A)
+
+# ╔═╡ e8ced749-64a9-4335-921c-e8e78764a14d
+sum(abs, A * inv(A) - I) 
+
+# ╔═╡ c4604f18-cc84-4a85-96d1-456423c6edb5
+md"""
+## Задание 2. Число обусловленности
+"""
+
+# ╔═╡ a5fbe839-56cd-4338-be35-eded3046e3d9
+cond(A::Matrix; norm::Function=|₂) =
+	(norm(A), norm(inv_sle(A)), norm(A) * norm(inv_sle(A)))
+
+# ╔═╡ 515370c4-8911-4aab-807a-89655aaaf341
+cond(A)
+
+# ╔═╡ b4d3a49d-368a-42db-afcc-4acce7c754eb
+cond(A, norm=|₁)
+
+# ╔═╡ 1977f686-9a9b-4e70-84b4-dd1dc394158b
+cond(A, norm=∞)
+
 # ╔═╡ Cell order:
 # ╟─0cb92a82-8e93-11ec-091b-f1abb82c2225
 # ╟─32f02311-d88b-47ef-a399-59752ce037a5
@@ -226,6 +286,7 @@ md"""
 # ╠═53a63945-6809-4fc4-8987-21bd7b7c5e90
 # ╠═d052cb09-e039-4c65-96ad-e14c32a0fbbc
 # ╠═cd9d8f24-8bf7-49ee-a506-4a98c4c0a5d8
+# ╠═cdab7141-216c-4f72-8c29-f2f5cd013670
 # ╠═ba30acac-a40f-4034-b16d-8d4292477d1e
 # ╠═7a4ea9df-c08b-4ef1-8f1e-df476d8698a3
 # ╟─98618ada-6cc9-4436-802b-b66acda14603
@@ -244,3 +305,14 @@ md"""
 # ╠═2d89109b-dd51-4a22-acab-ed8bea61880c
 # ╟─73340101-8c51-4f19-a200-58c99002138f
 # ╠═df3c1167-ed28-4b77-8ac7-0f8ebddee9ae
+# ╟─84472daa-bd6b-4f58-a2d1-dbbfb6a222bb
+# ╟─436cf432-e6a5-4029-abf1-15e73833f689
+# ╠═073884d6-4126-4001-bb23-cc84b678cf7d
+# ╠═8c0747d9-84b0-44a1-834e-ad5e02cd5a36
+# ╠═5eea2411-64cc-40b9-a36b-3106f7ff26d0
+# ╠═e8ced749-64a9-4335-921c-e8e78764a14d
+# ╟─c4604f18-cc84-4a85-96d1-456423c6edb5
+# ╠═a5fbe839-56cd-4338-be35-eded3046e3d9
+# ╠═515370c4-8911-4aab-807a-89655aaaf341
+# ╠═b4d3a49d-368a-42db-afcc-4acce7c754eb
+# ╠═1977f686-9a9b-4e70-84b4-dd1dc394158b
