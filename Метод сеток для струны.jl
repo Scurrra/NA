@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.14
+# v0.19.15
 
 using Markdown
 using InteractiveUtils
@@ -111,7 +111,7 @@ DataFrame(
 
 # ╔═╡ Cell order:
 # ╟─e82ff0d4-6677-11ed-3106-1fa3a3bcd132
-# ╟─44ed6842-c347-4556-b1fc-31e451454fe5
+# ╠═44ed6842-c347-4556-b1fc-31e451454fe5
 # ╠═75b89c36-904f-455e-bedf-ce7706129e02
 # ╠═fd47ef09-d9b3-4859-a313-6cd37669feb1
 # ╠═9be24890-9c3a-4735-bdb5-cdfb2570354c
